@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import OpenAI from 'openai';
 import { tools } from './chat.tools';
@@ -6,16 +6,12 @@ import { SendMessageChatDto } from './dto/send-message-chat.dto';
 
 @Injectable()
 export class ChatService {
-  private openai: OpenAI;
   private sessions: Map<string, OpenAI.Chat.Completions.ChatCompletionMessageParam[]> = new Map();
 
   constructor(
-    private configService: ConfigService
-  ) {
-    this.openai = new OpenAI({
-      apiKey: this.configService.get<string>('OPENAI_API_KEY'),
-    });
-  }
+    private configService: ConfigService,
+    @Inject('OPENAI_CLIENT') private openai: OpenAI
+  ) { }
 
   async postMessage(payload: SendMessageChatDto) {
     const { message, email } = payload;
