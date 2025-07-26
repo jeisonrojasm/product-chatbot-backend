@@ -1,8 +1,10 @@
-import { Injectable, InternalServerErrorException, Logger } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import * as csv from 'csv-parser';
 import * as fs from 'fs';
 import * as path from 'path';
 import { Product } from './interfaces/product.interface';
+import { CustomException } from '../exceptions/custom.exception';
+import { ERROR_DICTIONARY } from '../exceptions/custom.exception.dictionary';
 
 @Injectable()
 export class ProductService {
@@ -62,7 +64,10 @@ export class ProductService {
       return filtered;
     } catch (error) {
       this.logger.error('Failed to search products', error);
-      throw new InternalServerErrorException('Could not search products');
+      throw new CustomException(
+        ERROR_DICTIONARY.SEARCH_PRODUCTS_ERROR.message,
+        error.code || ERROR_DICTIONARY.SEARCH_PRODUCTS_ERROR.code
+      );
     }
   }
 }

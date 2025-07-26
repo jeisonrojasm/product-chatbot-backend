@@ -1,11 +1,14 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { ConvertCurrencyDto } from './dto/convert-currency.dto';
 import { ConversionResponse } from './interfaces/conversion-response.interface';
+import { CustomException } from '../exceptions/custom.exception';
+import { ERROR_DICTIONARY } from '../exceptions/custom.exception.dictionary';
 
 @Injectable()
 export class CurrencyService {
   private readonly openExchangeRatesApiKey: string;
+  private readonly logger = new Logger(CurrencyService.name);
 
   constructor(
     private readonly configService: ConfigService
@@ -46,7 +49,11 @@ export class CurrencyService {
         rate
       };
     } catch (error) {
-      throw new Error(`Failed to convert currency: ${error.message}`);
+      this.logger.error('Error in convertCurrency:', error);
+      throw new CustomException(
+        ERROR_DICTIONARY.CONVERT_CURRENCY_ERROR.message,
+        error.code || ERROR_DICTIONARY.CONVERT_CURRENCY_ERROR.code
+      );
     }
   }
 }
