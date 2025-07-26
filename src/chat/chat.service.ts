@@ -1,7 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
 import OpenAI from 'openai';
-import { tools } from './chat.tools';
+import { searchProducts, tools } from './chat.tools';
 import { SendMessageChatDto } from './dto/send-message-chat.dto';
 
 @Injectable()
@@ -9,7 +8,6 @@ export class ChatService {
   private sessions: Map<string, OpenAI.Chat.Completions.ChatCompletionMessageParam[]> = new Map();
 
   constructor(
-    private configService: ConfigService,
     @Inject('OPENAI_CLIENT') private openai: OpenAI
   ) { }
 
@@ -28,7 +26,7 @@ export class ChatService {
       content: message
     })
 
-    const response = await this.openai.chat.completions.create({
+    const firstResponse = await this.openai.chat.completions.create({
       model: 'gpt-4.1-mini',
       messages: previousMessages,
       tools,
@@ -37,12 +35,54 @@ export class ChatService {
       top_p: 1,
     });
 
+    const toolCalls = firstResponse.choices[0].message.tool_calls;
+
+    if (toolCalls && toolCalls.length > 0) {
+      // ⚠️ IMPORTANT: This message from the model must be added to the message history to preserve context.
+      // `firstResponse.choices[0].message` contains the tool_call(s) requested by the model.
+      // If it's not included, the next OpenAI call won't know that it previously requested a tool,
+      // and it won't be able to generate a proper continuation based on the tool's output.
+      // This step is required by OpenAI's tool calling protocol: each request is stateless,
+      // so the full context (including tool requests) must be passed explicitly.
+      previousMessages.push(firstResponse.choices[0].message);
+
+      for (const toolCall of toolCalls) {
+        const { name, arguments: args } = toolCall.function;
+        const parsedArgs = JSON.parse(args);
+
+        let result: any;
+
+        if (name === 'searchProducts') {
+          result = await searchProducts(parsedArgs.message);
+        }
+
+        // Add the tool's response to the history
+        previousMessages.push({
+          role: 'tool',
+          tool_call_id: toolCall.id,
+          content: JSON.stringify(result),
+        });
+
+        // Second call: generate the final response
+        const finalResponse = await this.openai.chat.completions.create({
+          model: 'gpt-4.1-mini',
+          messages: previousMessages,
+          temperature: 0.2,
+          top_p: 1,
+        });
+
+        previousMessages.push(finalResponse.choices[0].message);
+        this.sessions.set(email, previousMessages);
+        return finalResponse.choices[0];
+      }
+    }
+
     // Add the assistant's response to the history
-    previousMessages.push(response.choices[0].message);
+    previousMessages.push(firstResponse.choices[0].message);
 
     // Save updated history
     this.sessions.set(email, previousMessages);
 
-    return response.choices[0];
+    return firstResponse.choices[0];
   }
 }
