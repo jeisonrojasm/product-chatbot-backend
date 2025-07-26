@@ -3,6 +3,8 @@ import OpenAI from 'openai';
 import { tools } from './chat.tools';
 import { SendMessageChatDto } from './dto/send-message-chat.dto';
 import { ProductService } from 'src/product/product.service';
+import { CurrencyService } from 'src/currency/currency.service';
+import { ConvertCurrencyDto } from 'src/currency/dto/convert-currency.dto';
 
 @Injectable()
 export class ChatService {
@@ -10,7 +12,8 @@ export class ChatService {
 
   constructor(
     @Inject('OPENAI_CLIENT') private openai: OpenAI,
-    private readonly productService: ProductService
+    private readonly productService: ProductService,
+    private readonly currencyService: CurrencyService
   ) { }
 
   async postMessage(payload: SendMessageChatDto) {
@@ -56,6 +59,8 @@ export class ChatService {
 
         if (name === 'searchProducts') {
           result = await this.productService.searchProducts(parsedArgs.message);
+        } else if (name === 'convertCurrencies') {
+          result = await this.currencyService.convertCurrency(parsedArgs);
         }
 
         // Add the tool's response to the history
