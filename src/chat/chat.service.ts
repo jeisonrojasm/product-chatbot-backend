@@ -1,14 +1,16 @@
 import { Inject, Injectable } from '@nestjs/common';
 import OpenAI from 'openai';
-import { searchProducts, tools } from './chat.tools';
+import { tools } from './chat.tools';
 import { SendMessageChatDto } from './dto/send-message-chat.dto';
+import { ProductService } from 'src/product/product.service';
 
 @Injectable()
 export class ChatService {
   private sessions: Map<string, OpenAI.Chat.Completions.ChatCompletionMessageParam[]> = new Map();
 
   constructor(
-    @Inject('OPENAI_CLIENT') private openai: OpenAI
+    @Inject('OPENAI_CLIENT') private openai: OpenAI,
+    private readonly productService: ProductService
   ) { }
 
   async postMessage(payload: SendMessageChatDto) {
@@ -53,7 +55,7 @@ export class ChatService {
         let result: any;
 
         if (name === 'searchProducts') {
-          result = await searchProducts(parsedArgs.message);
+          result = await this.productService.searchProducts(parsedArgs.message);
         }
 
         // Add the tool's response to the history
