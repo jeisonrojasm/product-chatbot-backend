@@ -4,6 +4,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ChatModule } from './chat/chat.module';
 import { ProductModule } from './product/product.module';
+import { CurrencyModule } from './currency/currency.module';
 
 @Module({
   imports: [
@@ -12,7 +13,8 @@ import { ProductModule } from './product/product.module';
       envFilePath: '.env',
     }),
     ChatModule,
-    ProductModule
+    ProductModule,
+    CurrencyModule
   ],
   controllers: [AppController],
   providers: [AppService],
