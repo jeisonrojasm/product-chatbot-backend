@@ -13,11 +13,17 @@ export class CurrencyService {
     this.openExchangeRatesApiKey = this.configService.get<string>('OPEN_EXCHANGE_RATES_API_KEY');
   }
 
+  /**
+   * Name           : convertCurrency
+   * Purpose        : Converts a specified amount from one currency to another using exchange rates from the OpenExchangeRates API.
+   * Parameters     :
+   *    - payload (ConvertCurrencyDto) : An object containing the source currency (`from`), target currency (`to`), and amount to convert.
+   * Returns        : Promise<ConversionResponse> - A promise that resolves with the converted amount, exchange rate, and related details.
+   */
   async convertCurrency(payload: ConvertCurrencyDto): Promise<ConversionResponse> {
     try {
       const { from, to, amount } = payload;
 
-      // const url = `https://openexchangerates.org/api/convert/${amount}/${from}/${to}?app_id=${this.openExchangeRatesApiKey}`;
       const url = `https://openexchangerates.org/api/latest.json?app_id=${this.openExchangeRatesApiKey}`;
 
       const response = await fetch(url);

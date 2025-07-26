@@ -4,7 +4,6 @@ import { tools } from './chat.tools';
 import { SendMessageChatDto } from './dto/send-message-chat.dto';
 import { ProductService } from 'src/product/product.service';
 import { CurrencyService } from 'src/currency/currency.service';
-import { ConvertCurrencyDto } from 'src/currency/dto/convert-currency.dto';
 
 @Injectable()
 export class ChatService {
@@ -16,6 +15,13 @@ export class ChatService {
     private readonly currencyService: CurrencyService
   ) { }
 
+  /**
+   * Name           : postMessage
+   * Purpose        : Sends a user message to the OpenAI model, manages the conversation context, and executes tool functions if requested by the model.
+   * Parameters     :
+   *    - payload (SendMessageChatDto) : An object containing the user's email and the message to send to the assistant.
+   * Returns        : Promise<any> - A promise that resolves with the assistant's response, which may include tool execution results.
+   */
   async postMessage(payload: SendMessageChatDto) {
     const { message, email } = payload;
 

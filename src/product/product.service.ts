@@ -8,6 +8,13 @@ import { Product } from './interfaces/product.interface';
 export class ProductService {
   private readonly logger = new Logger(ProductService.name);
 
+  /**
+   * Name           : readProductsFromCSV
+   * Purpose        : Reads and parses a CSV file to extract product data and return it as an array of Product objects.
+   * Parameters     :
+   *    - filePath (string) : The path to the CSV file containing the product data.
+   * Returns        : Promise<Product[]> - A promise that resolves with an array of Product objects parsed from the CSV file.
+   */
   private async readProductsFromCSV(filePath: string): Promise<Product[]> {
     return new Promise((resolve, reject) => {
       const results: Product[] = [];
@@ -22,6 +29,13 @@ export class ProductService {
     });
   }
 
+  /**
+   * Name           : searchProducts
+   * Purpose        : Searches for products that match a given query by reading and filtering a CSV file containing product data.
+   * Parameters     :
+   *    - query (string) : The search term used to match against product titles and descriptions.
+   * Returns        : Promise<Product[]> - A promise that resolves with a list of matching Product objects (up to a maximum of 2 results).
+   */
   async searchProducts(query: string): Promise<Product[]> {
     try {
       const MAX_RESULTS = 2; // Maximum number of results to return
