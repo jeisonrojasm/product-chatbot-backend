@@ -1,4 +1,8 @@
+
+import * as csv from 'csv-parser';
+import * as fs from 'fs';
 import OpenAI from 'openai';
+import * as path from 'path';
 
 export const tools: OpenAI.Chat.Completions.ChatCompletionTool[] = [
   {
@@ -44,3 +48,40 @@ export const tools: OpenAI.Chat.Completions.ChatCompletionTool[] = [
     },
   },
 ];
+
+export interface Product {
+  displayTitle: string;
+  embeddingText: string;
+  url: string;
+  imageUrl: string;
+  productType: string;
+  discount: string;
+  price: string;
+  variants: string;
+  createDate: string;
+}
+
+export const searchProducts = async (query: string): Promise<Product[]> => {
+  const products: Product[] = [];
+
+  const filePath = path.resolve(__dirname, '..', 'assets', 'products_list.csv');
+
+  return new Promise((resolve, reject) => {
+    fs.createReadStream(filePath)
+      .pipe(csv()) // converts each row of the CSV file into a JS object
+      .on('data', (data) => products.push(data)) // each product (data) is saved in the products array
+      .on('end', () => {
+        const filtered = products
+          .filter(product =>
+            (
+              `${product.displayTitle} ${product.embeddingText}`
+            )
+              .toLowerCase()
+              .includes(query.toLowerCase())
+          )
+          .slice(0, 2); // return max 2 products
+        resolve(filtered);
+      })
+      .on('error', reject);
+  });
+}
