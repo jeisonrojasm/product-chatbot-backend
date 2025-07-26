@@ -1,6 +1,8 @@
 import { ConfigService } from '@nestjs/config';
 import { Test, TestingModule } from '@nestjs/testing';
 import { ChatService } from './chat.service';
+import { CurrencyService } from '../currency/currency.service';
+import { ProductService } from '../product/product.service';
 
 describe('ChatService', () => {
   let service: ChatService;
@@ -29,6 +31,18 @@ describe('ChatService', () => {
         {
           provide: 'OPENAI_CLIENT',
           useValue: openaiMock,
+        },
+        {
+          provide: ProductService,
+          useValue: {
+            searchProducts: jest.fn().mockResolvedValue([]),
+          },
+        },
+        {
+          provide: CurrencyService,
+          useValue: {
+            convertCurrencies: jest.fn().mockResolvedValue({}),
+          },
         }
       ],
     }).compile();

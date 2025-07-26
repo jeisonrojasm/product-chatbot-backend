@@ -1,13 +1,22 @@
-import { Injectable, InternalServerErrorException, Logger } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import * as csv from 'csv-parser';
 import * as fs from 'fs';
 import * as path from 'path';
 import { Product } from './interfaces/product.interface';
+import { CustomException } from '../exceptions/custom.exception';
+import { ERROR_DICTIONARY } from '../exceptions/custom.exception.dictionary';
 
 @Injectable()
 export class ProductService {
   private readonly logger = new Logger(ProductService.name);
 
+  /**
+   * Name           : readProductsFromCSV
+   * Purpose        : Reads and parses a CSV file to extract product data and return it as an array of Product objects.
+   * Parameters     :
+   *    - filePath (string) : The path to the CSV file containing the product data.
+   * Returns        : Promise<Product[]> - A promise that resolves with an array of Product objects parsed from the CSV file.
+   */
   private async readProductsFromCSV(filePath: string): Promise<Product[]> {
     return new Promise((resolve, reject) => {
       const results: Product[] = [];
@@ -22,6 +31,13 @@ export class ProductService {
     });
   }
 
+  /**
+   * Name           : searchProducts
+   * Purpose        : Searches for products that match a given query by reading and filtering a CSV file containing product data.
+   * Parameters     :
+   *    - query (string) : The search term used to match against product titles and descriptions.
+   * Returns        : Promise<Product[]> - A promise that resolves with a list of matching Product objects (up to a maximum of 2 results).
+   */
   async searchProducts(query: string): Promise<Product[]> {
     try {
       const MAX_RESULTS = 2; // Maximum number of results to return
@@ -48,7 +64,10 @@ export class ProductService {
       return filtered;
     } catch (error) {
       this.logger.error('Failed to search products', error);
-      throw new InternalServerErrorException('Could not search products');
+      throw new CustomException(
+        ERROR_DICTIONARY.SEARCH_PRODUCTS_ERROR.message,
+        error.code || ERROR_DICTIONARY.SEARCH_PRODUCTS_ERROR.code
+      );
     }
   }
 }
