@@ -1,0 +1,10 @@
+node_modules
+dist
+coverage
+.git
+.eslintrc.js
+.gitignore
+.prettierrc
+package-lock.json
+README.md
+.env
