@@ -1,73 +1,102 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+# Product Chatbot
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+## 🛠️ Built with
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+- NestJS
+- TypeScript
+- Swagger
+- Docker
+- Jest
 
-## Description
+## ✅ Prerequisites
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+Before starting, make sure you have the following applications installed:
 
-## Installation
+- ✅ [*Git*](https://git-scm.com/)
+- ✅ [*Docker* and Docker Compose](https://www.docker.com/get-started) installed and running
+
+## 📥 Get the project
+
+Clone the repository:
 
 ```bash
-$ npm install
+#Clone the repository
+git clone https://github.com/jeisonrojasm/product-chatbot-backend.git
+cd product-chatbot-backend
 ```
 
-## Running the app
+## 🚀 Execute
+
+### 1. **`.env` file required**
+
+The `.env` file contains sensitive variables required to run the project (such as credentials, tokens, and service URLs).
+For security reasons, **it is not included in the repository**.
+
+> 🔐 **In the email you received, you will find the `.env` file required for the backend to run correctly.**
+
+Once you have the `.env` file, place it in the root of the project.
+
+### 2. Setting up the development environment with Docker
+
+Due this application is fully Dockerized, you don't need to manually install Node.js or any dependencies on your computer. Simply run the following command from the project root to build the image and launch the backend container:
 
 ```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+docker-compose up -d --build
 ```
 
-## Test
+This command will perform the following actions:
+
+- It will build the Docker image defined in the `Dockerfile`, using `node:24-alpine` as a base.
+- It will automatically install all dependencies declared in `package.json`.
+
+Once the process is complete, the backend will be available at:
+
+```arduino
+http://localhost:3000
+```
+
+## ✅ Ready-to-use application
+
+Once the previous steps are completed:
+
+- The backend server will be running at `http://localhost:3000`.
+- You will be able to consume the defined REST endpoints.
+- And interactive documentation will be available in Swagger.
+
+> 🧪 You can now test the endpoints using **Postman** or any HTTP client like **Insomnia**.
+
+## 📚 Documentation with Swagger
+
+This API features interactive documentation automatically generated with Swagger thanks to the integration with `swagger-jsdoc` and `swagger-ui-express`.
+
+### What can you do from Swagger?
+
+- View all available endpoints (GET, POST, PATCH, etc.)
+- See examples of request and response.
+- Test endpoints directly from the browser.
+
+### Access documentation
+
+Once the backend is running, you can access Swagger at:
 
 ```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+http://localhost:3000/docs
 ```
 
-## Support
+## 🧪 Unit tests
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+This project includes a set of unit tests written with [Jest](https://jestjs.io/) to ensure the correct operation of the main services and controllers.
 
-## Stay in touch
+Each `*.spec.ts` file contains tests for the corresponding service, mocking dependencies with `jest.mock()` and `jest.spyOn()`.
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+### Run the tests
 
-## License
+You can run all tests with:
 
-Nest is [MIT licensed](LICENSE).
+```bash
+npm run test:cov
+```
+
+## 👨‍💻 Autor
+
+Developed by **Jeison Rojas** - *Fullstack developer* - [jeisonrojasm](https://github.com/jeisonrojasm)
