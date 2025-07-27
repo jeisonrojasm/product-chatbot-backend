@@ -13,7 +13,7 @@
 Before starting, make sure you have the following applications installed:
 
 - ✅ [*Git*](https://git-scm.com/)
-- ✅ [*Docker* y Docker Compose](https://www.docker.com/get-started) installed and running
+- ✅ [*Docker* and Docker Compose](https://www.docker.com/get-started) installed and running
 
 ## 📥 Get the project
 
@@ -64,3 +64,39 @@ Once the previous steps are completed:
 - And interactive documentation will be available in Swagger.
 
 > 🧪 You can now test the endpoints using **Postman** or any HTTP client like **Insomnia**.
+
+## 📚 Documentation with Swagger
+
+This API features interactive documentation automatically generated with Swagger thanks to the integration with `swagger-jsdoc` and `swagger-ui-express`.
+
+### What can you do from Swagger?
+
+- View all available endpoints (GET, POST, PATCH, etc.)
+- See examples of request and response.
+- Test endpoints directly from the browser.
+
+### Access documentation
+
+Once the backend is running, you can access Swagger at:
+
+```bash
+http://localhost:3000/docs
+```
+
+## 🧪 Unit tests
+
+This project includes a set of unit tests written with [Jest](https://jestjs.io/) to ensure the correct operation of the main services and controllers.
+
+Each `*.spec.ts` file contains tests for the corresponding service, mocking dependencies with `jest.mock()` and `jest.spyOn()`.
+
+### Run the tests
+
+You can run all tests with:
+
+```bash
+npm run test:cov
+```
+
+## 👨‍💻 Autor
+
+Developed by **Jeison Rojas** - *Fullstack developer* - [jeisonrojasm](https://github.com/jeisonrojasm)
