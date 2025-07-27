@@ -17,7 +17,7 @@ export class ProductService {
    *    - filePath (string) : The path to the CSV file containing the product data.
    * Returns        : Promise<Product[]> - A promise that resolves with an array of Product objects parsed from the CSV file.
    */
-  private async readProductsFromCSV(filePath: string): Promise<Product[]> {
+  protected async readProductsFromCSV(filePath: string): Promise<Product[]> {
     return new Promise((resolve, reject) => {
       const results: Product[] = [];
       fs.createReadStream(filePath)
