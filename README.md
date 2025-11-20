@@ -1,9 +1,12 @@
 # Product Chatbot
 
+NestJS backend implementing an AI chatbot using OpenAI Function Calling. Supports product search from CSV and real-time currency conversion. The API handles the full tool-calling workflow and returns the final LLM-generated response. Includes controllers, services, DTOs, and optional Swagger docs.
+
 ## 🛠️ Built with
 
 - NestJS
 - TypeScript
+- OpenAI Api
 - Swagger
 - Docker
 - Jest
@@ -25,16 +28,27 @@ git clone https://github.com/jeisonrojasm/product-chatbot-backend.git
 cd product-chatbot-backend
 ```
 
-## 🚀 Execute
+## 🚀 Run
 
 ### 1. **`.env` file required**
 
-The `.env` file contains sensitive variables required to run the project (such as credentials, tokens, and service URLs).
-For security reasons, **it is not included in the repository**.
+This project requires environment variables to run properly.
 
-> 🔐 **In the email you received, you will find the `.env` file required for the backend to run correctly.**
+Since the `.env` file is **not included** in the repository for security reasons, you must create your own .env file in the project root.
 
-Once you have the `.env` file, place it in the root of the project.
+You will need two API keys:
+
+- `OPENAI_API_KEY` → can be generated at: [https://platform.openai.com/docs/guides/text](https://platform.openai.com/docs/guides/text)
+- `OPEN_EXCHANGE_RATES_API_KEY` → can be generated at: [https://openexchangerates.org](https://openexchangerates.org)
+
+If you prefer, you may also **request the keys directly from me**, and I will provide valid credentials for testing or evaluation purposes.
+
+Create a `.env` file with the following structure:
+
+```bash
+OPENAI_API_KEY=your_key_here
+OPEN_EXCHANGE_RATES_API_KEY=your_key_here
+```
 
 ### 2. Setting up the development environment with Docker
 
@@ -97,6 +111,9 @@ You can run all tests with:
 npm run test:cov
 ```
 
-## 👨‍💻 Autor
+## 👨‍💻 Author
 
-Developed by **Jeison Rojas** - *Fullstack developer* - [jeisonrojasm](https://github.com/jeisonrojasm)
+Developed by **Jeison Rojas Mora** - *Fullstack Developer*
+
+- [https://github.com/jeisonrojasm](https://github.com/jeisonrojasm)
+- [https://www.linkedin.com/in/jeison-rojas-mora/](https://www.linkedin.com/in/jeison-rojas-mora/)
